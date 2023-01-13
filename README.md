@@ -54,8 +54,11 @@ Access http://127.0.0.1:7070/ to use webui, or you can use the [original search 
 
 ```bash
 mkdir book-searcher && cd book-searcher
-// Prepare the index
+// Prepare the index, download or you can make your own via `book-searcher index -f *.csv`
 wget https://raw.githubusercontent.com/book-searcher-org/book-searcher/master/docker-compose.yml
+# Prepare the index: put csv files in the directory, and run the following command to create index
+docker-compose run --rm -v "$PWD:$PWD" -w "$PWD" book-searcher /book-searcher index -f *.csv
+# start book-searcher
 docker-compose up -d
 ```
 
@@ -99,29 +102,7 @@ TARGET=release make
 mv target/release/book-searcher .
 ```
 
-### Build Desktop version
-
-**1. Install frontend dependences**
-
-```bash
-make frontend_preinstall
-```
-
-**2. Build `book-searcher-desktop`**
-
-```bash
-cargo tauri build
-```
-
-### Prepare the `index`
-
-**1. Prepare the raw data**
-
-Prepare the raw books metadata and save the `csv` files to the project root directory.
-
-The raw data is used to generate the `index`, see [Raw data](#raw-data) section for details.
-
-**2. Create `index`**
+### 2. Build `index`
 
 You may need to `rm -rf index` first.
 
